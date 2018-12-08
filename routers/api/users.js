@@ -1,8 +1,8 @@
 /*
  * @Author: 成雨
  * @Date: 2018-12-08 13:12:19 
- * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-12-08 15:25:46
+ * @Last Modified by: 成雨
+ * @Last Modified time: 2018-12-08 16:56:16
  */
 
 const express = require('express');
@@ -40,9 +40,7 @@ router.post('/register', (req, res) => {
         })
         .then((user) => {
             if (user) {
-                return res.status(400).json({
-                    email: '邮箱已被注册'
-                })
+                return res.status(400).json('邮箱已被注册');
             } else {
                 var avatar = gravatar.url(req.body.email, {
                     s: '200',
@@ -55,6 +53,7 @@ router.post('/register', (req, res) => {
                     email: req.body.email,
                     password: req.body.password,
                     avatar,
+                    identity: req.body.identity,
                 });
 
                 // 加密密码
@@ -89,9 +88,7 @@ router.post('/login', (req, res) => {
         })
         .then(user => {
             if (!user) {
-                return res.status(404).json({
-                    email: '用户不存在！',
-                });
+                return res.status(404).json('用户不存在！');
             }
 
             // 密码匹配
@@ -99,9 +96,16 @@ router.post('/login', (req, res) => {
             bcrypt.compare(password, user.password)
                 .then(isMatch => {
                     if (isMatch) {
-                        const rule = {id: user.id, name: user.name};
+                        const rule = {
+                            id: user.id,
+                            name: user.name,
+                            avatar: user.avater,
+                            identity: user.identity
+                        };
 
-                        jwt.sign(rule, keys.secretOrKey, {expiresIn: 3600}, (err, token) => {
+                        jwt.sign(rule, keys.secretOrKey, {
+                            expiresIn: 3600
+                        }, (err, token) => {
                             if (err) throw err;
                             res.json({
                                 success: true,
@@ -122,12 +126,15 @@ router.post('/login', (req, res) => {
  * @desc token 认证
  * @access Private
  */
- router.get('/current', passport.authenticate('jwt', {session: false}), (req, res) => {
+router.get('/current', passport.authenticate('jwt', {
+    session: false
+}), (req, res) => {
     res.json({
         id: req.user.id,
         name: req.user.name,
         email: req.user.email,
+        identity: req.user.identity,
     });
- });
+});
 
 module.exports = router;

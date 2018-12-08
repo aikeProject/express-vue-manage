@@ -1,32 +1,34 @@
 /*
- * @Author: 成雨
- * @Date: 2018-12-08 13:19:22 
+ * @Author: 成雨 
+ * @Date: 2018-12-08 17:01:15 
  * @Last Modified by: 成雨
- * @Last Modified time: 2018-12-08 16:56:47
+ * @Last Modified time: 2018-12-08 17:23:18
  */
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const UserSchema = new Schema({
-    name: {
+const ProFileSchema = new Schema({
+    type: {
+        type: String,
+    },
+    describe: {
+        type: String,
+    },
+    incode: {
         type: String,
         required: true,
     },
-    email: {
+    expend: {
         type: String,
         required: true,
     },
-    password: {
+    cash: {
         type: String,
         required: true,
     },
-    avatar: {
+    remark: {
         type: String,
-    },
-    identity: {
-        type: String,
-        required: true,
     },
     date: {
         type: Date,
@@ -35,4 +37,4 @@ const UserSchema = new Schema({
 });
 
 
-module.exports = User = mongoose.model('users', UserSchema);
+module.exports = Profile = mongoose.model('profile', ProFileSchema);

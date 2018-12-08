@@ -1,8 +1,8 @@
 /*
  * @Author: 成雨
  * @Date: 2018-12-08 12:29:15 
- * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-12-08 15:05:58
+ * @Last Modified by: 成雨
+ * @Last Modified time: 2018-12-08 17:39:51
  */
 
 const express = require('express');
@@ -15,12 +15,13 @@ const app = express();
 
 // api users.js
 const users = require('./routers/api/users');
+const profiles = require('./routers/api/profiles');
 
 // DB config
 const db = require('./config/keys').mongoURL;
 
 // Connect to mongodb
-mongoose.connect(db)
+mongoose.connect(db, {useNewUrlParser: true})
     .then(() => {
         console.log('连接 Mongodb 成功');
     })
@@ -38,6 +39,7 @@ app.use(passport.initialize());
 
 // api
 app.use('/api/users', users);
+app.use('/api/profiles', profiles);
 
 const port = process.env.PORT || 5000;
 
