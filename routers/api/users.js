@@ -2,16 +2,20 @@
  * @Author: 成雨
  * @Date: 2018-12-08 13:12:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-12-08 14:34:22
+ * @Last Modified time: 2018-12-08 15:25:46
  */
 
 const express = require('express');
 const router = express.Router();
+// 密码加密
 const bcrypt = require('bcrypt');
+// 全球公认头像
 const gravatar = require('gravatar');
-
+// 生成token
+const jwt = require('jsonwebtoken');
+const passport = require('passport');
 const User = require('../../mode/user.js');
-
+const keys = require('../../config/keys');
 /**
  * $route GET api/users/test
  * @desc 返回亲求的json数据
@@ -95,8 +99,14 @@ router.post('/login', (req, res) => {
             bcrypt.compare(password, user.password)
                 .then(isMatch => {
                     if (isMatch) {
-                        res.json({
-                            msg: 'success'
+                        const rule = {id: user.id, name: user.name};
+
+                        jwt.sign(rule, keys.secretOrKey, {expiresIn: 3600}, (err, token) => {
+                            if (err) throw err;
+                            res.json({
+                                success: true,
+                                token: 'Bearer ' + token,
+                            });
                         });
                     } else {
                         return res.status(400).json({
@@ -106,5 +116,18 @@ router.post('/login', (req, res) => {
                 });
         })
 });
+
+/**
+ * $route GET api/users/current
+ * @desc token 认证
+ * @access Private
+ */
+ router.get('/current', passport.authenticate('jwt', {session: false}), (req, res) => {
+    res.json({
+        id: req.user.id,
+        name: req.user.name,
+        email: req.user.email,
+    });
+ });
 
 module.exports = router;
