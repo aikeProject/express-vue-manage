@@ -2,12 +2,13 @@
  * @Author: 成雨
  * @Date: 2018-12-08 13:12:19 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-12-08 14:02:26
+ * @Last Modified time: 2018-12-08 14:09:49
  */
 
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
+const gravatar = require('gravatar');
 
 const User = require('../../mode/user.js');
 
@@ -35,10 +36,13 @@ router.post('/register', (req, res) => {
             if (user) {
                 return res.status(400).json({email: '邮箱已被注册'})
             } else {
+                var avatar = gravatar.url(req.body.email, {s: '200', r: 'pg', d: 'mm'});
+
                 const newUser = new User({
                     name: req.body.name,
                     email: req.body.email,
                     password: req.body.password,
+                    avatar,
                 });
                 
                 // 加密密码
