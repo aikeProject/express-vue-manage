@@ -2,7 +2,7 @@
     <div class="register">
         <section class="form_container">
             <div class="manage_tip">
-                <span class="title">成雨</span>
+                <span class="title">注册</span>
             </div>
             <el-form :model="registerUser" :rules="rules" class="registerForm" ref="registerForm" label-width="80px">
                 <el-form-item label="用户名" prop="name">
@@ -51,12 +51,44 @@ export default {
         identity: ""
       },
       rules: {
-       
+        name: [
+          {required: true, message: '用户名不能为空', trigger: 'blur'}, 
+          {min: 2, max: 30, message: '长度在2到30字符之间', trigger: 'blur'}
+        ],
+        email: [
+          {type: 'email', required: true, message: '邮箱格式不正确', trigger: 'blur'}
+        ],
+        password: [
+          {required: true, message: '密码不能为空'},
+          {min: 6, max: 30, message: '长度在6到30之间'}
+        ],
+        password2: [
+          {required: true, message: '确认密码不能为空'},
+          {min: 6, max: 30, message: '长度在6到30之间'},
+          {validator: validatePass2, trigger: 'blur'}
+        ],
       }
     };
   },
   methods: {
-    
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.$axios.post('/api/users/register', this.registerUser)
+            .then((result) => {
+              // 注册成功
+              this.$message({
+                message: '账户注册成功',
+                type: 'success',
+              });
+            });
+
+          this.$router.push('/login');
+        } else {
+          return false;
+        }
+      });
+    }
   }
 };
 </script>
