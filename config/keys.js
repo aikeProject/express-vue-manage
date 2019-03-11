@@ -8,11 +8,11 @@
 module.exports = {
     // 本地mongodb数据库
     local: {
-        mongoURL: 'localhost:27017',
+        mongoURL: 'mongodb://localhost/vue-manage',
     },
     // 远程mongodb数据库
     server: {
         mongoURL: 'mongodb://test:abcd1234@ds129454.mlab.com:29454/restful-api-product',
-        secretOrKey: 'secret',
-    }
+    },
+    secretOrKey: 'secret',
 };

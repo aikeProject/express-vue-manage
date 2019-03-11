@@ -73,7 +73,12 @@ router.post('/register', (req, res) => {
                         newUser.password = hash;
 
                         newUser.save()
-                            .then(user => res.json(user))
+                            .then(user => (CY.response(res, {
+                                    json: {
+                                        model: user
+                                    }
+                                })
+                            ))
                             .catch(err => console.log(err));
                     });
                 });
@@ -96,7 +101,13 @@ router.post('/login', (req, res) => {
     })
         .then(user => {
             if (!user) {
-                return res.status(404).json('用户不存在！');
+                return CY.response(res, {
+                    status: 400,
+                    json: {
+                        success: false,
+                        errorMsg: '用户名不存在!!!',
+                    }
+                });
             }
 
             // 密码匹配
@@ -118,8 +129,7 @@ router.post('/login', (req, res) => {
                             return CY.response(res, {
                                 json: {
                                     success: true,
-                                    errorMsg: 'Bearer ' + token,
-                                    errorCode: 400,
+                                    model: 'Bearer ' + token,
                                 }
                             });
                         });
