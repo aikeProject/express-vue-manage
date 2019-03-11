@@ -64,7 +64,7 @@
 
                                 // 解析token
                                 const decode = jwt_decode(token);
-                                console.log(decode);
+
                                 // 存储数据
                                 this.$store.dispatch("setIsAutnenticated", !this.isEmpty(decode));
                                 this.$store.dispatch("setUser", decode);
