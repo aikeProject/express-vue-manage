@@ -14,9 +14,9 @@ const opts = {}
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = keys.secretOrKey;
 
- module.exports = passport => {
+module.exports = passport => {
     passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
-        console.log(jwt_payload);
+        console.log('jwt_payload 认证返回值---：', jwt_payload);
 
         User.findById(jwt_payload.id)
             .then(user => {
@@ -26,6 +26,6 @@ opts.secretOrKey = keys.secretOrKey;
                     return done(null, false);
                 }
             })
-            .catch( err => console.log(err));
+            .catch(err => console.log(err));
     }));
- }
+};

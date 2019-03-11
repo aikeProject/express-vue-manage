@@ -9,7 +9,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const Profiles = require('../../mode/profiles');
-
+const CY = require('../../utils/CY');
 /**
  * $route POST api/profiles/add
  * @desc 新建信息接口
@@ -26,14 +26,18 @@ router.post('/add', passport.authenticate('jwt', {
     if (req.body.expend) profileFields.expend = req.body.expend;
     if (req.body.cash) profileFields.cash = req.body.cash;
     if (req.body.remark) profileFields.remark = req.body.remark;
-    console.log(profileFields);
+
     new Profiles(profileFields)
         .save()
         .then((result) => {
-            res.json(result);
+            CY.response(res, {
+                json: {
+                    model: result
+                }
+            });
         }).catch((err) => {
-            console.log(err);
-        });
+        console.log(err);
+    });
 });
 
 
@@ -52,8 +56,8 @@ router.get('/', passport.authenticate('jwt', {
             }
             res.json(result);
         }).catch((err) => {
-            console.log(err);
-        });
+        console.log(err);
+    });
 });
 
 
@@ -66,16 +70,16 @@ router.get('/:id', passport.authenticate('jwt', {
     session: false
 }), (req, res) => {
     Profiles.findOne({
-            _id: req.params.id
-        })
+        _id: req.params.id
+    })
         .then((result) => {
             if (!result) {
                 return res.status(4040).json('没有任何内容');
             }
             res.json(result);
         }).catch((err) => {
-            console.log(err);
-        });
+        console.log(err);
+    });
 });
 
 /**
@@ -117,13 +121,13 @@ router.delete('/delete/:id', passport.authenticate('jwt', {
     session: false
 }), (req, res) => {
     Profiles.findOneAndRemove({
-            _id: req.params.id
-        })
+        _id: req.params.id
+    })
         .then((result) => {
             result.save().then(profile => res.json(profile));
         }).catch((err) => {
-            res.status(404).json('删除失败');
-        });
+        res.status(404).json('删除失败');
+    });
 });
 
 module.exports = router;

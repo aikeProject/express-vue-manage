@@ -16,6 +16,7 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const User = require('../../mode/user.js');
 const keys = require('../../config/keys');
+const CY = require('../../utils/CY');
 /**
  * $route GET api/users/test
  * @desc 返回亲求的json数据
@@ -36,11 +37,18 @@ router.post('/register', (req, res) => {
     // 查询数据库中是否有邮箱
 
     User.findOne({
-            email: req.body.email
-        })
+        email: req.body.email
+    })
         .then((user) => {
             if (user) {
-                return res.status(400).json('邮箱已被注册');
+                return CY.response(res, {
+                    status: 400,
+                    json: {
+                        success: false,
+                        errorMsg: '邮箱已经存在!!!',
+                        errorCode: 400,
+                    }
+                });
             } else {
                 var avatar = gravatar.url(req.body.email, {
                     s: '200',
@@ -84,8 +92,8 @@ router.post('/login', (req, res) => {
 
     // 查询数据库
     User.findOne({
-            email
-        })
+        email
+    })
         .then(user => {
             if (!user) {
                 return res.status(404).json('用户不存在！');
@@ -107,15 +115,23 @@ router.post('/login', (req, res) => {
                             expiresIn: 3600
                         }, (err, token) => {
                             if (err) throw err;
-                            res.json({
-                                success: true,
-                                token: 'Bearer ' + token,
+                            return CY.response(res, {
+                                json: {
+                                    success: true,
+                                    errorMsg: 'Bearer ' + token,
+                                    errorCode: 400,
+                                }
                             });
                         });
                     } else {
-                        return res.status(400).json({
-                            password: '密码错误！'
-                        })
+                        return CY.response(res, {
+                            status: 400,
+                            json: {
+                                success: false,
+                                errorMsg: '密码错误!!!',
+                                errorCode: 400,
+                            }
+                        });
                     }
                 });
         })
@@ -129,11 +145,15 @@ router.post('/login', (req, res) => {
 router.get('/current', passport.authenticate('jwt', {
     session: false
 }), (req, res) => {
-    res.json({
-        id: req.user.id,
-        name: req.user.name,
-        email: req.user.email,
-        identity: req.user.identity,
+    CY.response(res, {
+        json: {
+            model: {
+                id: req.user.id,
+                name: req.user.name,
+                email: req.user.email,
+                identity: req.user.identity,
+            }
+        }
     });
 });
 

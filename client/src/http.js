@@ -10,6 +10,7 @@ import {Loading, Message} from 'element-ui';
 import router from './router';
 
 let loading;
+
 function startLoad() {
     loading = Loading.service({
         lock: true,
@@ -22,40 +23,40 @@ function endLoad() {
     loading.close();
 }
 
- // 请求拦截
- axios.interceptors.request.use(config => {
-     // 加载动画
-     startLoad();
-     if (localStorage.eleToken) {
-        // 设置统一的请求头
+// 请求拦截
+axios.interceptors.request.use(config => {
+    // 加载动画
+    startLoad();
+    if (localStorage.eleToken) {
+        // 设置统一的请求头 添加认证信息
         config.headers.Authorization = localStorage.eleToken;
-     }
-     return config;
- }, error => {
+    }
+    return config;
+}, error => {
     return Promise.reject(error);
- });
+});
 
- // 响应拦截
- axios.interceptors.response.use(res => {
+// 响应拦截
+axios.interceptors.response.use(res => {
     // 结束加载动画
     endLoad();
     return res;
- }, error => {
+}, error => {
     endLoad();
     Message.error(error.response.data);
 
     // 获取错误状态码
     const {status} = error.response;
-    if (status == 401) {
+    if (status === 401) {
         Message.error('token失效，请重新登录！');
 
-        // 清楚token
+        // 清除token
         localStorage.removeItem('eleToken');
 
         router.push('/login');
     }
 
     return Promise.reject(error);
- });
+});
 
- export default axios;
+export default axios;

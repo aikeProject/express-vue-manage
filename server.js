@@ -18,7 +18,7 @@ const users = require('./routers/api/users');
 const profiles = require('./routers/api/profiles');
 
 // DB config
-const db = require('./config/keys').mongoURL;
+const db = require('./config/keys').local.mongoURL;
 
 // Connect to mongodb
 mongoose.connect(db, {useNewUrlParser: true})
@@ -32,6 +32,7 @@ mongoose.connect(db, {useNewUrlParser: true})
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
+// 认证处理
 require('./config/passport')(passport);
 
 // passport init初始化
