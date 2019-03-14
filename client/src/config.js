@@ -7,7 +7,7 @@
 // 导航列表
 export const navList = [
     {
-        path: 'home',
+        path: 'index/home',
         name: 'HOME',
         icon: "fa-money",
         children: []

@@ -36,7 +36,7 @@ const router = new Router({
             name: 'index',
             component: Index,
             children: [
-                {path: '/', component: Home},
+                {path: '', component: Home},
                 {path: '/home', name: 'home', component: Home},
                 {path: '/foundlist', name: 'foundlist', component: Home},
                 {path: '/infoshow', name: 'infoshow', component: Home},
