@@ -52,9 +52,16 @@ router.get('/', passport.authenticate('jwt', {
     Profiles.find()
         .then((result) => {
             if (!result) {
-                return res.status(4040).json('没有任何内容');
+                return CY.response(res, {
+                    status: 404,
+                    json: {
+                        success: false,
+                        errorMsg: '暂无内容',
+                        errorCode: 404,
+                    }
+                });
             }
-            res.json(result);
+            CY.response(res, {json: {model: result}});
         }).catch((err) => {
         console.log(err);
     });
@@ -74,9 +81,16 @@ router.get('/:id', passport.authenticate('jwt', {
     })
         .then((result) => {
             if (!result) {
-                return res.status(4040).json('没有任何内容');
+                return CY.response(res, {
+                    status: 404,
+                    json: {
+                        success: false,
+                        errorMsg: '暂无内容',
+                        errorCode: 404,
+                    }
+                });
             }
-            res.json(result);
+            CY.response(res, {json: {model: result}});
         }).catch((err) => {
         console.log(err);
     });
@@ -106,7 +120,7 @@ router.post('/edit/:id', passport.authenticate('jwt', {
     }, {
         new: true
     }).then((result) => {
-        res.json(result);
+        CY.response(res, {json: {model: result}});
     }).catch((err) => {
         console.log(err);
     });
@@ -124,9 +138,16 @@ router.delete('/delete/:id', passport.authenticate('jwt', {
         _id: req.params.id
     })
         .then((result) => {
-            result.save().then(profile => res.json(profile));
+            result.save().then(profile => CY.response(res, {json: {model: profile}}));
         }).catch((err) => {
-        res.status(404).json('删除失败');
+        CY.response(res, {
+            status: 404,
+            json: {
+                success: false,
+                errorMsg: '删除失败',
+                errorCode: 404,
+            }
+        });
     });
 });
 

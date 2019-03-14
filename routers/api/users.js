@@ -138,7 +138,7 @@ router.post('/login', (req, res) => {
                             status: 400,
                             json: {
                                 success: false,
-                                errorMsg: '密码错误!!!',
+                                errorMsg: '密码错误',
                                 errorCode: 400,
                             }
                         });
