@@ -13,5 +13,7 @@
 </script>
 
 <style scoped>
-
+    .header {
+        height: 100%;
+    }
 </style>

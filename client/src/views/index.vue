@@ -1,11 +1,11 @@
 <template>
     <div class="index">
-        <el-container>
-            <el-header>
+        <el-container style="height: 100%;">
+            <el-header class="el-header">
                 <HeaderNav/>
             </el-header>
             <el-container>
-                <el-aside width="200px">
+                <el-aside class="el-aside">
                     <AsideNav/>
                 </el-aside>
                 <el-main>
@@ -22,7 +22,7 @@
 
     export default {
         name: 'index',
-        comments: {
+        components: {
             HeaderNav,
             AsideNav
         }
@@ -31,5 +31,14 @@
 
 
 <style scoped>
-
+    .index {
+        width: 100%;
+        height: 100%;
+    }
+    .el-aside {
+        width: 200px!important;
+    }
+    .el-header {
+        border-bottom: solid 1px #e6e6e6;
+    }
 </style>
