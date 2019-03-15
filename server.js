@@ -7,6 +7,10 @@
 
 const express = require('express');
 const mongoose = require('mongoose');
+const log4js = require('log4js');
+log4js.configure('./config/log4js.json');
+const logger = log4js.getLogger('server');
+
 // 解析参数
 const bodyParser = require('body-parser');
 // token认证
@@ -23,9 +27,9 @@ const db = require('./config/keys').local.mongoURL;
 // Connect to mongodb
 mongoose.connect(db, {useNewUrlParser: true})
     .then(() => {
-        console.log('连接 Mongodb 成功');
+        logger.info('连接 Mongodb 成功');
     })
-    .catch(err => console.log(err));
+    .catch(err => logger.error(err));
 
 // 使用中间件实现允许跨域
 // app.use((req, res, next) => {
@@ -34,6 +38,8 @@ mongoose.connect(db, {useNewUrlParser: true})
 //     res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
 //     next();
 // });
+
+app.use(log4js.connectLogger(log4js.getLogger("http"), {level: 'auto'}));
 
 // 使用 bodu-parser中间件
 app.use(bodyParser.urlencoded({extended: false}));
@@ -52,5 +58,5 @@ app.use('/api/profiles', profiles);
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
-    console.log(`Server port ${port}`);
+    logger.info(`Server port ${port}`);
 });
