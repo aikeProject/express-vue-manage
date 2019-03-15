@@ -35,6 +35,7 @@
                 if (!item) return;
                 switch (item) {
                     case 'info':
+                        this.info();
                         break;
                     case 'logout':
                         this.logout();
@@ -42,7 +43,7 @@
                 }
             },
             info: function () {
-
+                this.$router.push('index/infoshow');
             },
             logout: function () {
                 localStorage.clear('eleToken');
@@ -76,6 +77,7 @@
     }
 
     .head {
+        flex: 0 0 50px;
         width: 50px;
         height: 50px;
         display: block;

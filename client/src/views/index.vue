@@ -4,11 +4,11 @@
             <el-header class="el-header">
                 <HeaderNav/>
             </el-header>
-            <el-container>
+            <el-container style="min-width: 960px;">
                 <el-aside class="el-aside">
                     <AsideNav/>
                 </el-aside>
-                <el-main>
+                <el-main style="min-width: 760px;">
                     <router-view/>
                 </el-main>
             </el-container>
