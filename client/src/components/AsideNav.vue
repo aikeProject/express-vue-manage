@@ -1,7 +1,7 @@
 <template>
     <div class="aside">
         <el-menu
-                default-active="1"
+                :default-active="navList[0].path"
                 @open="handleOpen"
                 @close="handleClose"
                 :router="true">
@@ -9,7 +9,7 @@
                 <template v-if="!!item.children && (Array.isArray(item.children) && item.children.length!==0)">
                     <el-submenu :index="(index+'')">
                         <template slot="title">
-                            <i class="el-icon-location"></i>
+                            <i :class="item.icon"></i>
                             <span>{{item.name}}</span>
                         </template>
                         <template v-for="(child, one) in item.children">
@@ -31,7 +31,7 @@
                 <template v-else>
                     <el-menu-item :index="item.path">
                         <template slot="title">
-                            <i class="el-icon-location"></i>
+                            <i :class="item.icon"></i>
                             <span>{{item.name}}</span>
                         </template>
                     </el-menu-item>
