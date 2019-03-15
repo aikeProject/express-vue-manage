@@ -10,6 +10,9 @@ const router = express.Router();
 const passport = require('passport');
 const Profiles = require('../../mode/profiles');
 const CY = require('../../utils/CY');
+const log4js = require('./config/log4js');
+const errlogger = log4js.getLogger('err');
+const othlogger = log4js.getLogger('oth');
 /**
  * $route POST api/profiles/add
  * @desc 新建信息接口
@@ -36,7 +39,7 @@ router.post('/add', passport.authenticate('jwt', {
                 }
             });
         }).catch((err) => {
-        console.log(err);
+        errlogger.error(err);
     });
 });
 
@@ -63,7 +66,7 @@ router.get('/', passport.authenticate('jwt', {
             }
             CY.response(res, {json: {model: result}});
         }).catch((err) => {
-        console.log(err);
+        errlogger.error(err);
     });
 });
 
@@ -92,7 +95,7 @@ router.get('/:id', passport.authenticate('jwt', {
             }
             CY.response(res, {json: {model: result}});
         }).catch((err) => {
-        console.log(err);
+        errlogger.error(err);
     });
 });
 
@@ -122,7 +125,7 @@ router.post('/edit/:id', passport.authenticate('jwt', {
     }).then((result) => {
         CY.response(res, {json: {model: result}});
     }).catch((err) => {
-        console.log(err);
+        errlogger.error(err);
     });
 });
 
@@ -148,6 +151,7 @@ router.delete('/delete/:id', passport.authenticate('jwt', {
                 errorCode: 404,
             }
         });
+        errlogger.error(err);
     });
 });
 

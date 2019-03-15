@@ -17,6 +17,9 @@ const passport = require('passport');
 const User = require('../../mode/user.js');
 const keys = require('../../config/keys');
 const CY = require('../../utils/CY');
+const log4js = require('./config/log4js');
+const errlogger = log4js.getLogger('err');
+const othlogger = log4js.getLogger('oth');
 /**
  * $route GET api/users/test
  * @desc 返回亲求的json数据
@@ -68,6 +71,7 @@ router.post('/register', (req, res) => {
                 bcrypt.genSalt(10, function (err, salt) {
                     bcrypt.hash(newUser.password, salt, function (err, hash) {
                         // Store hash in your password DB.
+                        errlogger.error(err);
                         if (err) throw err;
 
                         newUser.password = hash;
@@ -79,7 +83,7 @@ router.post('/register', (req, res) => {
                                     }
                                 })
                             ))
-                            .catch(err => console.log(err));
+                            .catch(err => errlogger.error(err));
                     });
                 });
             }
