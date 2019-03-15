@@ -17,7 +17,7 @@ const passport = require('passport');
 const User = require('../../mode/user.js');
 const keys = require('../../config/keys');
 const CY = require('../../utils/CY');
-const log4js = require('./config/log4js');
+const log4js = require('../../config/log4js');
 const errlogger = log4js.getLogger('err');
 const othlogger = log4js.getLogger('oth');
 /**
@@ -119,10 +119,11 @@ router.post('/login', (req, res) => {
             bcrypt.compare(password, user.password)
                 .then(isMatch => {
                     if (isMatch) {
+                        othlogger.info(user);
                         const rule = {
                             id: user.id,
                             name: user.name,
-                            avatar: user.avater,
+                            avatar: user.avatar,
                             identity: user.identity
                         };
 

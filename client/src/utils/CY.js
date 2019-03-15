@@ -8,7 +8,7 @@ import axios from 'axios';
 import {Loading, Message} from 'element-ui';
 
 const CY = {
-    GET(url, data, options={}) {
+    GET(url, data, options = {}) {
         return new Promise((resolve, reject) => {
             axios.get(url, data).then(res => {
                 const data = res.data;
@@ -25,7 +25,7 @@ const CY = {
             });
         });
     },
-    POST(url, data, options={}) {
+    POST(url, data, options = {}) {
         return new Promise((resolve, reject) => {
             axios.post(url, data).then(res => {
                 const data = res.data;
@@ -41,6 +41,14 @@ const CY = {
                 }
             });
         });
+    },
+    isEmpty(value) {
+        return (
+            value === undefined ||
+            value === null ||
+            (typeof value === "object" && Object.keys(value).length === 0) ||
+            (typeof value === "string" && value.trim().length === 0)
+        );
     }
 };
 

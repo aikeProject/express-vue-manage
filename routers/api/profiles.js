@@ -10,7 +10,7 @@ const router = express.Router();
 const passport = require('passport');
 const Profiles = require('../../mode/profiles');
 const CY = require('../../utils/CY');
-const log4js = require('./config/log4js');
+const log4js = require('../../config/log4js');
 const errlogger = log4js.getLogger('err');
 const othlogger = log4js.getLogger('oth');
 /**

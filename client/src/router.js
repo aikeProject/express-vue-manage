@@ -5,6 +5,8 @@ import Register from './views/Register'
 import NotFound from './views/404'
 import Login from './views/Login'
 import Home from './views/Home'
+import FoundList from './views/Foundlist'
+import Infoshow from './views/Infoshow'
 
 Vue.use(Router)
 
@@ -18,13 +20,12 @@ const router = new Router({
         },
         {
             path: '/index',
-            name: 'index',
             component: Index,
             children: [
-                {path: '', component: Home},
-                {path: 'home', component: Home},
-                {path: 'foundlist', name: 'foundlist', component: Home},
-                {path: 'infoshow', name: 'infoshow', component: Home},
+                {path: '/', component: Home,},
+                {path: 'home', name:'iHome', component: Home},
+                {path: 'foundlist', name: 'iFoundlist', component: FoundList},
+                {path: 'infoshow', name: 'iInfoshow', component: Infoshow},
             ]
         },
         {
@@ -46,13 +47,13 @@ const router = new Router({
 });
 
 // 路由守卫
-// router.beforeEach((to, from, next) => {
-//     const isLogin = localStorage.eleToken ? true : false;
-//     if (to.path === '/login' || to.path === '/register') {
-//         next();
-//     } else {
-//         isLogin ? next() : next('/login');
-//     }
-// });
+router.beforeEach((to, from, next) => {
+    const isLogin = !!localStorage.getItem('eleToken') ? true : false;
+    if (to.path === '/login' || to.path === '/register') {
+        next();
+    } else {
+        isLogin ? next() : next('/login');
+    }
+});
 
 export default router;
