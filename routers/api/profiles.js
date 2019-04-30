@@ -67,7 +67,6 @@ router.get('/', passport.authenticate('jwt', {
             const reqResult = (result || []).map(item => {
                 return {...item._doc, date: new Date(item.date) * 1};
             });
-            othlogger.info('/profiles', reqResult);
             CY.response(res, {json: {model: reqResult}});
         }).catch((err) => {
         errlogger.error(err);
