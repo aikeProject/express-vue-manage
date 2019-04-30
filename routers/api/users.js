@@ -128,7 +128,7 @@ router.post('/login', (req, res) => {
                         };
 
                         jwt.sign(rule, keys.secretOrKey, {
-                            expiresIn: 3600
+                            expiresIn: 86400 // 24 * 60 * 60 一天
                         }, (err, token) => {
                             if (err) throw err;
                             return CY.response(res, {

@@ -44,12 +44,12 @@
                 </el-table-column>
                 <el-table-column prop="expend" label="支出" align="center" width="170">
                     <template slot-scope="scope">
-                        <span style="color:#f56767">- {{scope.row.income}}</span>
+                        <span style="color:#f56767">- {{scope.row.expend}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="cash" label="账户现金" align="center" width="170">
                     <template slot-scope="scope">
-                        <span style="color:#4db3ff">{{scope.row.income}}</span>
+                        <span style="color:#4db3ff">{{scope.row.cash}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column prop="remark" label="备注" align="center" width="170"></el-table-column>

@@ -23,7 +23,8 @@ const users = require('./routers/api/users');
 const profiles = require('./routers/api/profiles');
 
 // DB config
-const db = require('./config/keys').local.mongoURL;
+// const db = require('./config/keys').local.mongoURL;
+const db = require('./config/keys').server.mongoURL;
 
 // Connect to mongodb
 mongoose.connect(db, {useNewUrlParser: true})

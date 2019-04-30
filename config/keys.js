@@ -12,7 +12,7 @@ module.exports = {
     },
     // 远程mongodb数据库
     server: {
-        mongoURL: 'mongodb://test:abcd1234@ds129454.mlab.com:29454/restful-api-product',
+        mongoURL: 'mongodb://admin:admin0402@ds149616.mlab.com:49616/vue-manage',
     },
     secretOrKey: 'secret',
 };

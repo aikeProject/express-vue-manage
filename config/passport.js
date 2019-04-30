@@ -1,14 +1,14 @@
 /*
  * @Author: 成雨
- * @Date: 2018-12-08 14:55:26 
- * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-12-08 15:24:46
+ * @Date: 2018-12-08 14:55:26
  */
 const JwtStrategy = require('passport-jwt').Strategy,
     ExtractJwt = require('passport-jwt').ExtractJwt;
 const mongoose = require('mongoose');
 const User = mongoose.model('users');
 const keys = require('./keys');
+const log4js = require('./log4js');
+const errlogger = log4js.getLogger('err');
 
 const opts = {}
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
@@ -26,6 +26,6 @@ module.exports = passport => {
                     return done(null, false);
                 }
             })
-            .catch(err => console.log(err));
+            .catch(err => errlogger.error(err));
     }));
 };
