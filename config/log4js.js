@@ -21,7 +21,8 @@ log4js.configure({
             pattern: 'err-yyyy-MM-dd.log',
             alwaysIncludePattern: true
         },
-        oth: {//其他日志
+        //其他日志
+        oth: {
             type: 'dateFile',
             filename: 'logs/othlog/',
             pattern: 'oth-yyyy-MM-dd.log',

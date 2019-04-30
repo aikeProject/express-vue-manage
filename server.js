@@ -9,8 +9,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const log4js = require('./config/log4js');
 const logger = log4js.getLogger();
-const errlogger = log4js.getLogger('err');
-const othlogger = log4js.getLogger('oth');
+const errLogger = log4js.getLogger('err');
+const othLogger = log4js.getLogger('oth');
 
 // 解析参数
 const bodyParser = require('body-parser');
@@ -28,9 +28,9 @@ const db = require('./config/keys').local.mongoURL;
 // Connect to mongodb
 mongoose.connect(db, {useNewUrlParser: true})
     .then(() => {
-        othlogger.info('连接 Mongodb 成功');
+        othLogger.info('连接 Mongodb 成功');
     })
-    .catch(err => errlogger.error(err));
+    .catch(err => errLogger.error(err));
 
 // 使用中间件实现允许跨域
 // app.use((req, res, next) => {
@@ -60,5 +60,5 @@ app.use('/api/profiles', profiles);
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
-    othlogger.info(`Server port ${port}`);
+    othLogger.info(`Server port ${port}`);
 });

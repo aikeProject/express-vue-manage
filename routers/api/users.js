@@ -98,7 +98,7 @@ router.post('/register', (req, res) => {
 router.post('/login', (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
-
+    othlogger.info('/login', req.body);
     // 查询数据库
     User.findOne({
         email

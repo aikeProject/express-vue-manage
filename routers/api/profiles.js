@@ -22,10 +22,10 @@ router.post('/add', passport.authenticate('jwt', {
     session: false
 }), (req, res) => {
     const profileFields = {};
-
+    othlogger.info('/profiles/add', req.body);
     if (req.body.type) profileFields.type = req.body.type;
     if (req.body.describe) profileFields.describe = req.body.describe;
-    if (req.body.incode) profileFields.incode = req.body.incode;
+    if (req.body.income) profileFields.income = req.body.income;
     if (req.body.expend) profileFields.expend = req.body.expend;
     if (req.body.cash) profileFields.cash = req.body.cash;
     if (req.body.remark) profileFields.remark = req.body.remark;
@@ -64,7 +64,11 @@ router.get('/', passport.authenticate('jwt', {
                     }
                 });
             }
-            CY.response(res, {json: {model: result}});
+            const reqResult = (result || []).map(item => {
+                return {...item._doc, date: new Date(item.date) * 1};
+            });
+            othlogger.info('/profiles', reqResult);
+            CY.response(res, {json: {model: reqResult}});
         }).catch((err) => {
         errlogger.error(err);
     });
