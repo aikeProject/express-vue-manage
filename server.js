@@ -11,7 +11,7 @@ const log4js = require('./config/log4js');
 const logger = log4js.getLogger();
 const errLogger = log4js.getLogger('err');
 const othLogger = log4js.getLogger('oth');
-
+const path = require('path');
 // 解析参数
 const bodyParser = require('body-parser');
 // token认证
@@ -47,6 +47,7 @@ log4js.useLogger(app, logger);
 // 使用 bodu-parser中间件
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'public')));
 
 // 认证处理
 require('./config/passport')(passport);
