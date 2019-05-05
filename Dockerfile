@@ -7,7 +7,7 @@ COPY . /app/
 
 WORKDIR /app
 
-CMD npm run publish-install
+RUN npm run publish-install
 
 # 暴露3000端口
 EXPOSE 3000
