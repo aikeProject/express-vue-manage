@@ -12,4 +12,4 @@ RUN npm i
 # 暴露3000端口
 EXPOSE 3000
 
-CMD npm start
+CMD npm publish
