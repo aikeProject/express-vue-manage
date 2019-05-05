@@ -12,7 +12,8 @@
     "dev": "npx concurrently \"npm run server\" \"npm run client\"",
     "build-clien": "npm run build --prefix client",
     "copy-client": "node ./main.js",
-    "publish": "npm install && npm run client-install && npm run build-clien && npm run copy-client && pm2 list && pm2 del all && npm run start-pm2"
+    "publish-install": "npm install && npm run client-install && npm run build-clien && npm run copy-client && pm2 list && pm2 del all",
+    "publish": "npm run start-pm2"
   },
   "author": "",
   "license": "ISC",
