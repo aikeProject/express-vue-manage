@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./bin/www",
-    "start-pm2": "pm2 start ./bin/www",
+    "start-pm2": "npx pm2 start ./bin/www",
     "server": "nodemon ./bin/www",
     "client-install": "npm install --prefix client",
     "client": "npm start --prefix client",
