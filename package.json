@@ -4,27 +4,37 @@
   "description": "node express vue",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "server": "nodemon server.js",
+    "start": "node ./bin/www",
+    "start-pm2": "pm2 start ./bin/www",
+    "server": "nodemon ./bin/www",
     "client-install": "npm install --prefix client",
     "client": "npm start --prefix client",
-    "dev": "npx concurrently \"npm run server\" \"npm run client\""
+    "dev": "npx concurrently \"npm run server\" \"npm run client\"",
+    "build-clien": "npm run build --prefix client",
+    "copy-client": "node ./main.js",
+    "publish": "npm run build-clien && npm run copy-client && npm run start-pm2"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^3.0.2",
-    "body-parser": "^1.18.3",
-    "express": "^4.16.4",
-    "gravatar": "^1.8.0",
-    "jsonwebtoken": "^8.4.0",
-    "mongoose": "^5.3.15",
-    "passport": "^0.4.0",
-    "passport-jwt": "^4.0.0"
+    "bcrypt": "~3.0.2",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "gravatar": "~1.8.0",
+    "http-errors": "~1.6.3",
+    "jade": "~1.11.0",
+    "jsonwebtoken": "~8.4.0",
+    "mongoose": "~5.3.15",
+    "morgan": "~1.9.1",
+    "passport": "~0.4.0",
+    "passport-jwt": "~4.0.0"
   },
   "devDependencies": {
-    "concurrently": "^4.1.0",
-    "log4js": "^4.0.2",
-    "nodemon": "^1.18.7"
+    "concurrently": "~4.1.0",
+    "log4js": "~4.0.2",
+    "nodemon": "~1.18.7",
+    "pm2": "^3.5.0",
+    "shelljs": "~0.8.3"
   }
 }

@@ -13,7 +13,7 @@ const bcrypt = require('bcrypt');
 const gravatar = require('gravatar');
 // 生成token
 const jwt = require('jsonwebtoken');
-const passport = require('passport');
+const passport = require('passport/lib');
 const User = require('../../mode/user.js');
 const keys = require('../../config/keys');
 const CY = require('../../utils/CY');
