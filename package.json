@@ -13,7 +13,7 @@
     "build-clien": "npm run build --prefix client",
     "copy-client": "node ./main.js",
     "publish-install": "npm install && npm run client-install && npm run build-clien && npm run copy-client",
-    "publish": "pm2 list && pm2 del all && npm run start-pm2"
+    "publish": "npm start"
   },
   "author": "",
   "license": "ISC",
