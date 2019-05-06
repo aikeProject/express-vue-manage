@@ -13,6 +13,7 @@ const passport = require('passport');
 // api users.js
 const users = require('./routes/api/users');
 const profiles = require('./routes/api/profiles');
+const files = require('./routes/api/files');
 
 // DB config
 // const db = require('./config/keys').local.mongoURL;
@@ -52,6 +53,7 @@ app.use(passport.initialize());
 // api
 app.use('/api/users', users);
 app.use('/api/profiles', profiles);
+app.use('/api/files', files);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
