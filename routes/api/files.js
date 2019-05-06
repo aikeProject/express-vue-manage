@@ -10,6 +10,7 @@ const formidable = require('formidable');
 const path = require('path');
 const fs = require('fs');
 const CY = require('../../utils/CY');
+const config = require('../../config/keys');
 router.post('/upload', function (req, res) {
     var form = new formidable.IncomingForm();
     //设置编辑
@@ -27,7 +28,7 @@ router.post('/upload', function (req, res) {
                 json: {
                     model: {
                         key: key,
-                        url: key
+                        url: config.baseUrl + key
                     }
                 }
             });
