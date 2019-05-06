@@ -91,3 +91,27 @@
 -   `passport` token认证 [passport](https://github.com/jaredhanson/passport)
 -   `mongoose` 操作mongodb [mongoose](https://github.com/Automattic/mongoose)
 -   `bcrypt` 加密 [bcrypt](https://github.com/kelektiv/node.bcrypt.js)
+-   `gravatar` 全球公认头像 [gravatar](https://github.com/emerleite/node-gravatar)
+-   `jsonwebtoken` 生成token [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)
+-   `log4js` 日志 [log4js](https://github.com/log4js-node/log4js-node)
+
+###### 部署
+-   通过docker部署 [daocloud](https://dashboard.daocloud.io/)
+
+```dockerfile
+FROM node
+
+MAINTAINER ChengYu "https://github.com/aikeProject"
+
+# 优先将 ./package.json  复制到镜像中，预先加载第三方依赖
+COPY . /app/
+
+WORKDIR /app
+
+RUN npm run publish-install
+
+# 暴露3000端口
+EXPOSE 3000
+
+CMD npm run publish
+```
