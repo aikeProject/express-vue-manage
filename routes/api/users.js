@@ -135,7 +135,7 @@ router.post('/login', (req, res) => {
                         };
 
                         if (user.avatarKey) {
-                            rule.avatarUrl = req.headers.host + '/' + user.avatarKey;
+                            rule.avatarUrl = 'http://' + req.headers.host + '/' + user.avatarKey;
                         }
 
                         jwt.sign(rule, keys.secretOrKey, {
