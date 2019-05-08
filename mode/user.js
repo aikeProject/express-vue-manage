@@ -21,7 +21,10 @@ const UserSchema = new Schema({
         type: String,
         required: true,
     },
-    avatar: {
+    avatarKey: {
+        type: String,
+    },
+    avatarDefault: {
         type: String,
     },
     identity: {

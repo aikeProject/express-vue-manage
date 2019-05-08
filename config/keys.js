@@ -15,5 +15,5 @@ module.exports = {
         mongoURL: 'mongodb://admin:admin0402@ds149616.mlab.com:49616/vue-manage',
     },
     secretOrKey: 'secret',
-    baseUrl: 'http://111.231.56.173:3200/'
+    // BASE_URL: globStart,
 };

@@ -49,13 +49,13 @@
         data() {
             return {
                 form: {
+                    id: '',
                     name: '',
                     passwordOld: '',
                     passwordNew: '',
                     email: '',
                 },
                 imageUrl: '',
-                avatar: false,
                 rules: {
                     name: [
                         {required: true, message: '用户名不能为空', trigger: 'blur'},
@@ -152,9 +152,9 @@
         },
         // vm.$el已挂载在文档内，对已有dom节点的操作可以在这期间进行
         mounted() {
-            const {avatar, name, email} = this.user;
-            this.imageUrl = avatar || '';
-            this.form = {...this.form, name, email};
+            const {avatarUrl, avatarDefault, name, email, id} = this.user;
+            this.imageUrl = avatarUrl || avatarDefault || '';
+            this.form = {...this.form, name, email, id};
         },
         // 数据更新时调用，发生在虚拟 DOM 重新渲染和打补丁之前。可以在这个钩子中进一步地更改状态，这不会触发附加的重渲染过程。
         beforeUpdate() {

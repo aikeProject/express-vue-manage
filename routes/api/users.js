@@ -67,7 +67,8 @@ router.post('/register', (req, res) => {
                     name: req.body.name,
                     email: req.body.email,
                     password: req.body.password,
-                    avatar,
+                    avatarDefault: avatar,
+                    avatarKey: '',
                     identity: req.body.identity,
                 });
 
@@ -127,10 +128,15 @@ router.post('/login', (req, res) => {
                         const rule = {
                             id: user.id,
                             name: user.name,
-                            avatar: user.avatar,
+                            avatarDefault: user.avatarDefault,
+                            avatarUrl: '',
                             identity: user.identity,
                             email: user.email
                         };
+
+                        if (user.avatarKey) {
+                            rule.avatarUrl = req.headers.host + '/' + user.avatarKey;
+                        }
 
                         jwt.sign(rule, keys.secretOrKey, {
                             expiresIn: 86400 // 24 * 60 * 60 一天
@@ -236,7 +242,7 @@ router.post('/edit', passport.authenticate('jwt', {
             const newPath = path.join(path.dirname(oldPath), key);
             fs.rename(oldPath, newPath, (err) => {
                 if (err) throw err;
-                setFields.avatar = key;
+                setFields.avatarKey = key;
                 User.update({
                     _id: fields.id,
                 }, setFields).then(() => {

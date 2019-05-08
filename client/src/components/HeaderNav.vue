@@ -3,7 +3,7 @@
         <el-col :span="12" :offset="12" class="header-height">
             <div class="header-height header-con">
                 <div class="head-img">
-                    <img class="head" :src="user.avatar" alt="avatar">
+                    <img class="head" :src="user.avatarUrl || user.avatarDefault" alt="avatar">
                 </div>
                 <div class="user-info">
                     {{user.name}}

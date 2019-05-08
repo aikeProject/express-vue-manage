@@ -28,7 +28,7 @@ router.post('/upload', function (req, res) {
                 json: {
                     model: {
                         key: key,
-                        url: config.baseUrl + key
+                        url: config.BASE_URL + key
                     }
                 }
             });
