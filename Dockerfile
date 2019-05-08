@@ -7,6 +7,8 @@ COPY . /app/
 
 WORKDIR /app
 
+RUN mkdir files
+
 RUN npm run publish-install
 
 # 暴露3000端口
