@@ -5,7 +5,7 @@
  */
 
 import axios from 'axios';
-import {Loading, Message} from 'element-ui';
+import {Message} from 'element-ui';
 
 const CY = {
     GET(url, data, options = {}) {

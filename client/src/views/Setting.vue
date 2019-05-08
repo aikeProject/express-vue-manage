@@ -1,15 +1,18 @@
 <template>
     <div class="_setting">
-        <el-form ref="form" :model="form" label-position="right" label-width="100px">
+        <el-form ref="form" :model="form" :rules="rules" label-position="right" label-width="100px">
             <el-form-item>
                 <div class="upload-dashed">
                     <el-upload
                             class="avatar-uploader"
-                            action="https://jsonplaceholder.typicode.com/posts/"
+                            action="/api/users/edit"
                             ref="upload"
+                            :headers="headers"
                             :show-file-list="false"
                             :on-change="changeUpload"
                             :before-upload="beforeAvatarUpload"
+                            :on-success="uploadSuccess"
+                            :data="form"
                             :auto-upload="false">
                         <img v-if="imageUrl" :src="imageUrl" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -19,10 +22,10 @@
             <el-form-item label="用户名">
                 <el-input v-model="form.name" aplaceholder="请输入正确"></el-input>
             </el-form-item>
-            <el-form-item label="旧密码" required>
+            <el-form-item label="旧密码">
                 <el-input v-model="form.passwordOld" aplaceholder="请输入旧密码"></el-input>
             </el-form-item>
-            <el-form-item label="新密码" required>
+            <el-form-item label="新密码">
                 <el-input v-model="form.passwordNew" aplaceholder="请输入新密码"></el-input>
             </el-form-item>
             <el-form-item label="邮箱">
@@ -36,6 +39,8 @@
 </template>
 
 <script>
+    import CY from "../utils/CY";
+
     export default {
         name: "Setting",
         // 组件
@@ -49,7 +54,25 @@
                     passwordNew: '',
                     email: '',
                 },
-                imageUrl: ''
+                imageUrl: '',
+                avatar: false,
+                rules: {
+                    name: [
+                        {required: true, message: '用户名不能为空', trigger: 'blur'},
+                        {min: 2, max: 30, message: '长度在2到30字符之间', trigger: 'blur'}
+                    ],
+                    email: [
+                        {type: 'email', required: true, message: '邮箱格式不正确', trigger: 'blur'}
+                    ],
+                    passwordOld: [
+                        {required: true, message: '密码不能为空'},
+                        {min: 6, max: 30, message: '长度在6到30之间'}
+                    ],
+                    passwordNew: [
+                        {required: true, message: '确认密码不能为空'},
+                        {min: 6, max: 30, message: '长度在6到30之间'},
+                    ],
+                }
             };
         },
         props: {},
@@ -58,15 +81,39 @@
         computed: {
             user() {
                 return this.$store.getters.user;
+            },
+            headers() {
+                const headers = {};
+                if (localStorage.eleToken) {
+                    // 设置统一的请求头 添加认证信息
+                    headers.Authorization = localStorage.eleToken;
+                }
+                return headers;
             }
         },
         // props 可以是数组或对象，用于接收来自父组件的数据
         methods: {
             onSubmit() {
-                this.$refs.upload.submit();
+                // avatar true 图像被修改过
+                if (this.avatar) {
+                    this.$refs.upload.submit();
+                } else {
+                    const formData = new FormData();
+                    const {form, user} = this;
+                    for (let key in form) {
+                        formData.append(key, form[key]);
+                    }
+                    formData.append('id', user.id);
+                    CY.POST('/api/users/edit', formData).then(() => {
+                        this.$message({
+                            type: 'success',
+                            message: '修改成功, 请重新登录'
+                        });
+                        this.$router.push("/login");
+                    });
+                }
             },
             beforeAvatarUpload(file) {
-                console.log('-beforeAvatarUpload-', file);
                 const isJPG = file.type === 'image/jpeg';
                 const isLt2M = file.size / 1024 / 1024 < 2;
 
@@ -79,13 +126,25 @@
                 return isJPG && isLt2M;
             },
             changeUpload(file, fileList) {
+                console.log('-changeUpload-');
+                this.avatar = true;
                 this.imageUrl = URL.createObjectURL(file.raw);
+            }
+            ,
+            uploadSuccess(res, file) {
+                if (res && res.model) {
+                    this.$message({
+                        type: 'success',
+                        message: '修改成功, 请重新登录'
+                    });
+                    this.$router.push("/login");
+                }
             }
         },
         // 组件实例刚被创建，组件属性计算之前，如data等属性
         beforeCreate() {
         },
-        // 组件实例创建完成，属性已经绑定，但dom还未生成，$el属性还不存在 
+        // 组件实例创建完成，属性已经绑定，但dom还未生成，$el属性还不存在
         created() {
         },
         // 在挂载开始之前被调用：相关的 render 函数首次被调用

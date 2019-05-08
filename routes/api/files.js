@@ -19,8 +19,8 @@ router.post('/upload', function (req, res) {
     form.uploadDir = "./files";
     form.parse(req, function (err, fields, files) {
         if (err) throw err;
-        const oldPath = files.thumbnail.path;
-        const key = (new Date() * 1) + '-' + parseInt(Math.random() * 8999 + 10000) + '-' + files.thumbnail.name;
+        const oldPath = files.file.path;
+        const key = (new Date() * 1) + '-' + parseInt(Math.random() * 8999 + 10000) + '-' + files.file.name;
         const newPath = path.join(path.dirname(oldPath), key);
         fs.rename(oldPath, newPath, (err) => {
             if (err) throw err;

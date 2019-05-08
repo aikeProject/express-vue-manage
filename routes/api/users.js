@@ -13,10 +13,14 @@ const bcrypt = require('bcrypt');
 const gravatar = require('gravatar');
 // 生成token
 const jwt = require('jsonwebtoken');
+const formidable = require('formidable');
+const path = require('path');
+const fs = require('fs');
 const passport = require('passport/lib');
 const User = require('../../mode/user.js');
 const keys = require('../../config/keys');
 const CY = require('../../utils/CY');
+const config = require('../../config/keys');
 const log4js = require('../../config/log4js');
 const errlogger = log4js.getLogger('err');
 const othlogger = log4js.getLogger('oth');
@@ -151,6 +155,101 @@ router.post('/login', (req, res) => {
                     }
                 });
         })
+});
+
+/**
+ * $route POST api/users/edit
+ * @desc 修改
+ * @access public
+ */
+router.post('/edit', passport.authenticate('jwt', {
+    session: false
+}), function (req, res) {
+    var form = new formidable.IncomingForm();
+    //设置编辑
+    form.encoding = 'utf-8';
+    //设置文件存储路径
+    form.uploadDir = "./files";
+    form.parse(req, function (err, fields, files) {
+        if (err) throw err;
+        const setFields = {};
+        if (!fields.id) return;
+        if (fields.name) setFields.name = fields.name;
+        if (fields.email) setFields.email = fields.email;
+        // 没上传文件
+        if (!files.file) {
+            // 新旧密码存在 才修改密码
+            if (fields.passwordOld && fields.passwordNew) {
+                setFields.password = fields.passwordNew;
+                User.findById(fields.id)
+                    .then((user) => {
+                        bcrypt.compare(fields.passwordOld, user.password)
+                            .then(isMatch => {
+                                if (isMatch) {
+                                    User.update({
+                                        _id: fields.id,
+                                    }, setFields).then(() => {
+                                        CY.response(res, {json: {model: 'true'}});
+                                    }).catch(() => {
+                                        CY.response(res, {
+                                            status: 400,
+                                            json: {success: false, errorMsg: '修改失败', errorCode: 400}
+                                        });
+                                    });
+                                } else {
+                                    return CY.response(res, {
+                                        status: 400,
+                                        json: {
+                                            success: false,
+                                            errorMsg: '旧密码不匹配',
+                                            errorCode: 400,
+                                        }
+                                    });
+                                }
+                            });
+                    }).catch((err) => {
+                    errlogger.error(err);
+                    CY.response(res, {
+                        status: 400,
+                        json: {
+                            success: false,
+                            errorMsg: '修改失败',
+                            errorCode: 400,
+                        }
+                    });
+                });
+            } else {
+                User.update({
+                    _id: fields.id,
+                }, setFields).then(() => {
+                    CY.response(res, {json: {model: true}});
+                }).catch(() => {
+                    CY.response(res, {
+                        status: 400,
+                        json: {success: false, errorMsg: '修改失败', errorCode: 400}
+                    });
+                });
+            }
+        } else {
+            const oldPath = files.file.path;
+            const key = (new Date() * 1) + '-' + parseInt(Math.random() * 8999 + 10000) + '-' + files.file.name;
+            const newPath = path.join(path.dirname(oldPath), key);
+            fs.rename(oldPath, newPath, (err) => {
+                if (err) throw err;
+                setFields.avatar = key;
+                User.update({
+                    _id: fields.id,
+                }, setFields).then(() => {
+                    CY.response(res, {json: {model: true}});
+                }).catch(() => {
+                    CY.response(res, {
+                        status: 400,
+                        json: {success: false, errorMsg: '修改失败', errorCode: 400}
+                    });
+                });
+            });
+        }
+    });
 });
 
 /**
