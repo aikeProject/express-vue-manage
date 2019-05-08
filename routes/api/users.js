@@ -124,7 +124,8 @@ router.post('/login', (req, res) => {
                             id: user.id,
                             name: user.name,
                             avatar: user.avatar,
-                            identity: user.identity
+                            identity: user.identity,
+                            email: user.email
                         };
 
                         jwt.sign(rule, keys.secretOrKey, {

@@ -14,6 +14,7 @@
                     </el-button>
                     <el-dropdown-menu slot="dropdown" size="small">
                         <el-dropdown-item command="info">个人信息</el-dropdown-item>
+                        <el-dropdown-item command="setting">设置</el-dropdown-item>
                         <el-dropdown-item command="logout">退出</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
@@ -31,7 +32,7 @@
             }
         },
         methods: {
-            dropBtn: function (item) {
+            dropBtn(item) {
                 if (!item) return;
                 switch (item) {
                     case 'info':
@@ -40,16 +41,22 @@
                     case 'logout':
                         this.logout();
                         break;
+                    case 'setting':
+                        this.setting();
+                        break;
                 }
             },
-            info: function () {
-                this.$router.push('index/infoshow');
+            info() {
+                this.$router.push('/index/infoshow');
             },
-            logout: function () {
+            logout() {
                 localStorage.clear('eleToken');
                 this.$store.dispatch('clearCurrentState');
 
                 this.$router.push('/login');
+            },
+            setting() {
+                this.$router.push('/setting');
             }
         },
     }

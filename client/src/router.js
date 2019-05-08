@@ -1,14 +1,15 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Index from './views/index'
-import Register from './views/Register'
-import NotFound from './views/404'
-import Login from './views/Login'
-import Home from './views/Home'
-import FoundList from './views/Foundlist'
-import Infoshow from './views/Infoshow'
+import Vue from 'vue';
+import Router from 'vue-router';
+import Index from './views/index';
+import Register from './views/Register';
+import NotFound from './views/404';
+import Login from './views/Login';
+import Home from './views/Home';
+import FoundList from './views/Foundlist';
+import Infoshow from './views/Infoshow';
+import Setting from './views/Setting';
 
-Vue.use(Router)
+Vue.use(Router);
 
 const router = new Router({
     // mode: 'history',
@@ -23,7 +24,7 @@ const router = new Router({
             component: Index,
             children: [
                 {path: '/', component: Home,},
-                {path: 'home', name:'iHome', component: Home},
+                {path: 'home', name: 'iHome', component: Home},
                 {path: 'foundlist', name: 'iFoundlist', component: FoundList},
                 {path: 'infoshow', name: 'iInfoshow', component: Infoshow},
             ]
@@ -37,6 +38,11 @@ const router = new Router({
             path: '/login',
             name: 'login',
             component: Login,
+        },
+        {
+            path: '/setting',
+            name: 'setting',
+            component: Setting
         },
         {
             path: '*',
